@@ -1,0 +1,22 @@
+name = "masarif-share"
+main = "src/worker.ts"
+compatibility_date = "2026-09-01"
+
+# The shopkeeper's page. The Worker runs first so it can add security headers
+# and serve the same page for every /l/<id> address.
+[assets]
+directory = "./public"
+binding = "ASSETS"
+html_handling = "none"
+not_found_handling = "none"
+run_worker_first = true
+
+[[d1_databases]]
+binding = "DB"
+database_name = "masarif-share"
+# Replace with the id printed by `npx wrangler d1 create masarif-share`.
+database_id = "e0536301-1b9f-497e-a9dc-780cba707936"
+
+# Deletes expired lists once a day. They stop being served the moment they expire.
+[triggers]
+crons = ["17 3 * * *"]
